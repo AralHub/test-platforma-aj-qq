@@ -4,13 +4,16 @@ import EchartsReact from "echarts-for-react"
 import { useEffect, useState } from "react"
 import type { Stats} from "src/entities/exam"
 import { useGetExamList, useGetStats } from "src/entities/exam"
+import { useToken } from "src/shared/hooks"
 import { formatNumber } from "src/shared/utils"
 
 const { Title } = Typography
 
 const useGetOption = (data: Stats[], mostCurrent: boolean) => {
+	const { token } = useToken()
+	
 	const option: EChartsOption = {
-		color: ["#113A34"],
+		color: [token.colorPrimary],
 		tooltip: {
 			show: true,
 			trigger: "axis",
