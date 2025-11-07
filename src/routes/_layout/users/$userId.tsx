@@ -154,9 +154,9 @@ function RouteComponent() {
 										<Flex justify="center">
 											<Image
 												width={200}
-												height={200}
+												height={300}
 												src={item.image_url}
-												style={{ padding: "20px 0px" }}
+												style={{ padding: "20px 0px", objectFit: "contain" }}
 											/>
 										</Flex>
 									)}
