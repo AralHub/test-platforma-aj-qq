@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Badge, Card, Flex, Select, Space, Spin } from "antd"
+import { Badge, Card, Flex, Image, Select, Space, Spin } from "antd"
 import { css, cx, useResponsive } from "antd-style"
 import { useToken } from "src/shared/hooks"
 import { useEffect, useRef, useState } from "react"
@@ -150,16 +150,16 @@ function RouteComponent() {
 										body: { padding: mobile ? "8px 12px" : "16px 24px" }
 									}}
 								>
-									{/* {item.image_url && (
-								<Flex justify="center">
-									<Image
-										width={200}
-										height={200}
-										src={item.image_url}
-										style={{ padding: "20px 0px" }}
-									/>
-								</Flex>
-							)} */}
+									{item.image_url && (
+										<Flex justify="center">
+											<Image
+												width={200}
+												height={200}
+												src={item.image_url}
+												style={{ padding: "20px 0px" }}
+											/>
+										</Flex>
+									)}
 									<Space direction={"vertical"}>
 										{item.options.map((el, index) => (
 											<Badge

@@ -14,6 +14,7 @@ export type UserAnswer = {
 	question_text: string
 	selected_option_id: number
 	is_correct: boolean
+	image_url: string
 	options: {
 		option_id: number
 		option_text: string
