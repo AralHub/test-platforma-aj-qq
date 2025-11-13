@@ -1,19 +1,15 @@
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Progress, Typography } from "antd"
 import { useToken } from "src/shared/hooks"
 
 const { Text } = Typography
 
-type TimerProps = {
+export const Timer = ({
+	started_at,
+	ended_at
+}: {
 	started_at?: string
 	ended_at?: string
-	onFinish: () => void
-}
-
-export const Timer: React.FC<TimerProps> = ({
-	started_at,
-	ended_at,
-	onFinish
 }) => {
 	const {
 		token: { colorPrimary }
@@ -21,7 +17,7 @@ export const Timer: React.FC<TimerProps> = ({
 
 	const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null)
 	const [totalSeconds, setTotalSeconds] = useState<number>(0)
-	const hasFinished = useRef(false) // Флаг: было ли завершение уже
+	const hasFinished = useRef(false)
 
 	const getTotalSeconds = (start: string, end: string) => {
 		const startDate = new Date(start)
@@ -60,9 +56,8 @@ export const Timer: React.FC<TimerProps> = ({
 	useEffect(() => {
 		if (remainingSeconds === 2 && !hasFinished.current) {
 			hasFinished.current = true
-			onFinish()
 		}
-	}, [remainingSeconds, onFinish])
+	}, [remainingSeconds])
 
 	if (!started_at || !ended_at || remainingSeconds === null) return null
 

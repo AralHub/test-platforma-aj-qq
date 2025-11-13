@@ -120,22 +120,10 @@ export const useCrudMutation = <
 			onSuccessQueryClient?.(queryClient, data)
 			onSuccess?.(data, ...args)
 		},
-		onError: (e, ...args) => {
-			onError?.(e, ...args)
-			const customError = renderError?.(e) ||
-				error || {
-					description:
-						e.response?.data?.message ||
-						typeof e.response?.data?.detail === "string"
-							? e.response?.data?.detail
-							: e.message
-				}
-			if (customError) {
-				message.error({
-					message: "Ошибка",
-					...customError
-				})
-			}
+		onError: (e) => {
+			message.error({
+				message: `code: ${e.status} \n ${e.response?.data.message}`
+			})
 		},
 		...mutationOptions
 	})

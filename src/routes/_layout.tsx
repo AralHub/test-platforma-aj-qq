@@ -1,6 +1,7 @@
 import {
 	BookOutlined,
 	CloseOutlined,
+	FontSizeOutlined,
 	HomeOutlined,
 	MenuOutlined,
 	OrderedListOutlined,
@@ -14,15 +15,7 @@ import {
 	useNavigate
 } from "@tanstack/react-router"
 import type { MenuProps } from "antd"
-import {
-	Divider,
-	Drawer,
-	Flex,
-	Image,
-	Layout,
-	Menu,
-	Typography
-} from "antd"
+import { Divider, Drawer, Flex, Image, Layout, Menu, Typography } from "antd"
 import { useResponsive } from "antd-style"
 import type { FC, PropsWithChildren } from "react"
 import { useEffect, useState } from "react"
@@ -62,8 +55,13 @@ const itemsAdmin: MenuProps["items"] = [
 	},
 	{
 		key: "/statistic",
-		icon: <OrderedListOutlined style={{ fontSize: 16 }} />,
+		icon: <OrderedListOutlined />,
 		label: "Статистика"
+	},
+	{
+		key: "/tag",
+		icon: <FontSizeOutlined style={{ fontSize: 16 }} />,
+		label: "Теги"
 	}
 	// {
 	// 	key: "/auth/register",

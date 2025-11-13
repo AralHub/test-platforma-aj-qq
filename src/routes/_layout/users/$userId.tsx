@@ -3,7 +3,6 @@ import { Badge, Card, Flex, Image, Select, Space, Spin } from "antd"
 import { css, cx, useResponsive } from "antd-style"
 import { useToken } from "src/shared/hooks"
 import { useEffect, useRef, useState } from "react"
-import { QuestionNav } from "src/pages/test/ui/question-nav"
 import Title from "antd/es/typography/Title"
 import { useGetUsersById, useGetUsersByIdAnswers } from "src/entities/users"
 import { ArrowLeftOutlined } from "@ant-design/icons"
@@ -60,11 +59,6 @@ function RouteComponent() {
 	})
 	const { data: exams, isLoading: examsLoading } =
 		useGetExamListByUserId(userId)
-
-	const handleClick = (key: string) => {
-		const ref = sectionRefs.current[key]
-		ref?.scrollIntoView({ behavior: "smooth", block: "start" })
-	}
 
 	useEffect(() => {
 		if (exams && exams.data) {
@@ -184,28 +178,6 @@ function RouteComponent() {
 								</Card>
 							))}
 						</Flex>
-						{!mobile && (
-							<QuestionNav
-								questionIds={
-									userAnswers?.data?.map((q) => String(q.question_id)) || []
-								}
-								onSelect={handleClick}
-								testValues={
-									userAnswers?.data.map((item) => String(item.question_id)) ||
-									[]
-								}
-								successValues={
-									userAnswers?.data
-										?.filter((el) => el.is_correct)
-										.map((item) => String(item.question_id)) || []
-								}
-								errorValues={
-									userAnswers?.data
-										?.filter((el) => !el.is_correct)
-										.map((item) => String(item.question_id)) || []
-								}
-							/>
-						)}
 					</>
 				)}
 			</Flex>

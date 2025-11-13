@@ -1,3 +1,3 @@
-export * from "./model/exam.types"
-export * from "./model/exam.service"
-export * from "./api/exam.api"
+export * from "./exam.types"
+export * from "./exam.service"
+export * from "./exam.api"

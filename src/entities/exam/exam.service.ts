@@ -1,7 +1,7 @@
 import type { ResponseSingleData } from "src/shared/api"
 import { api, type ResponseData } from "src/shared/api"
-import type { Exam, FinishForm, Start, TestResult, Stats } from "./exam.types"
-import type { GetParams, ParamId } from "src/shared/types"
+import type { Exam, Start, Stats, SubmitAnswerPost } from "./exam.types"
+import type { ParamId } from "src/shared/types"
 
 class ExamService {
 	get = async (): Promise<ResponseData<Exam>> => {
@@ -16,8 +16,8 @@ class ExamService {
 		const response = await api.get("/exams")
 		return response.data
 	}
-	getStats = async (id: number | string | undefined, params: GetParams): Promise<ResponseData<Stats>> => {
-		const response = await api.get(`/admin/exams/${id}/stats`, { params })
+	getStats = async (): Promise<ResponseData<Stats>> => {
+		const response = await api.get(`/admin/exams/analytics`)
 		return response.data
 	}
 	create = async (form: Exam): Promise<ResponseSingleData<Exam>> => {
@@ -28,19 +28,16 @@ class ExamService {
 		const response = await api.put(`/admin/exams/${id}`, form)
 		return response.data
 	}
+	submitAnswer = async (form: SubmitAnswerPost) => {
+		const response = await api.post(`/exams/submit_answer`, form)
+		return response.data
+	}
 	status = async (id: number): Promise<ResponseSingleData<Exam>> => {
 		const response = await api.put(`/admin/exams/${id}/status`)
 		return response.data
 	}
 	start = async (id: number): Promise<ResponseSingleData<Start>> => {
 		const response = await api.post(`/exams/${id}/start`)
-		return response.data
-	}
-	finish = async ({
-		exam_id,
-		...form
-	}: FinishForm): Promise<ResponseSingleData<TestResult>> => {
-		const response = await api.post(`/exams/${exam_id}/stop`, form)
 		return response.data
 	}
 	delete = async (id: number) => {

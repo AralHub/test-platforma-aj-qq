@@ -1,6 +1,6 @@
 import { useCrudMutation, useCrudQuery } from "src/shared/api"
-import { examService } from "../model/exam.service"
-import type { GetParams, ParamId } from "src/shared/types"
+import { examService } from "./exam.service"
+import type { ParamId } from "src/shared/types"
 
 export const useCreateExam = () =>
 	useCrudMutation({
@@ -13,18 +13,17 @@ export const useGetExamList = () =>
 		queryFn: examService.get,
 		queryKey: ["exam"]
 	})
-	
+
 export const useGetExamListByUserId = (id: ParamId) =>
 	useCrudQuery({
 		queryFn: () => examService.getByUserId(id),
 		queryKey: ["exam", "user", id]
 	})
 
-export const useGetStats = (id: string | number | undefined, params: GetParams) =>
+export const useGetStats = () =>
 	useCrudQuery({
-		queryFn: () => examService.getStats(id, params),
-		queryKey: ["exam", "stats", id, ...Object.values(params)],
-		enabled: !!id
+		queryFn: () => examService.getStats(),
+		queryKey: ["exam"]
 	})
 
 export const useEditExam = () =>
@@ -71,23 +70,9 @@ export const useStartTest = () =>
 		}
 	})
 
-export const useFinishTest = () =>
+export const useSubmitAnswer = () =>
 	useCrudMutation({
-		mutationFn: examService.finish,
-		onSuccessQueryClient: async (queryClient) => {
-			await queryClient.refetchQueries({
-				queryKey: ["subjects"]
-			})
-			await queryClient.refetchQueries({
-				queryKey: ["users"]
-			})
-			await queryClient.refetchQueries({
-				queryKey: ["exam", "stats"]
-			})
-			await queryClient.refetchQueries({
-				queryKey: ["exam"]
-			})
-		}
+		mutationFn: examService.submitAnswer
 	})
 
 export const useUpdateStatus = () =>
@@ -100,7 +85,7 @@ export const useUpdateStatus = () =>
 			await queryClient.refetchQueries({
 				queryKey: ["subjects"]
 			})
-				await queryClient.refetchQueries({
+			await queryClient.refetchQueries({
 				queryKey: ["exam", "stats"]
 			})
 			await queryClient.refetchQueries({

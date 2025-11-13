@@ -19,6 +19,7 @@ import { Route as AuthAuthLayoutImport } from "./routes/auth/_auth-layout"
 import { Route as AuthAuthLayoutIndexImport } from "./routes/auth/_auth-layout/index"
 import { Route as LayoutUsersIndexImport } from "./routes/_layout/users/index"
 import { Route as LayoutTestIndexImport } from "./routes/_layout/test/index"
+import { Route as LayoutTagIndexImport } from "./routes/_layout/tag/index"
 import { Route as LayoutStatisticIndexImport } from "./routes/_layout/statistic/index"
 import { Route as LayoutExamIndexImport } from "./routes/_layout/exam/index"
 import { Route as AuthAuthLayoutRegisterImport } from "./routes/auth/_auth-layout/register"
@@ -26,6 +27,7 @@ import { Route as AuthAuthLayoutLoginImport } from "./routes/auth/_auth-layout/l
 import { Route as LayoutUsersUserIdImport } from "./routes/_layout/users/$userId"
 import { Route as LayoutExamExamidImport } from "./routes/_layout/exam/$exam_id"
 import { Route as LayoutTestTestIdIndexImport } from "./routes/_layout/test/$testId/index"
+import { Route as LayoutTestTestIdTagTestImport } from "./routes/_layout/test/$testId/tag-test"
 
 // Create Virtual Routes
 
@@ -73,6 +75,12 @@ const LayoutTestIndexRoute = LayoutTestIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutTagIndexRoute = LayoutTagIndexImport.update({
+  id: "/tag/",
+  path: "/tag/",
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutStatisticIndexRoute = LayoutStatisticIndexImport.update({
   id: "/statistic/",
   path: "/statistic/",
@@ -112,6 +120,12 @@ const LayoutExamExamidRoute = LayoutExamExamidImport.update({
 const LayoutTestTestIdIndexRoute = LayoutTestTestIdIndexImport.update({
   id: "/test/$testId/",
   path: "/test/$testId/",
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutTestTestIdTagTestRoute = LayoutTestTestIdTagTestImport.update({
+  id: "/test/$testId/tag-test",
+  path: "/test/$testId/tag-test",
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -189,6 +203,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LayoutStatisticIndexImport
       parentRoute: typeof LayoutImport
     }
+    "/_layout/tag/": {
+      id: "/_layout/tag/"
+      path: "/tag"
+      fullPath: "/tag"
+      preLoaderRoute: typeof LayoutTagIndexImport
+      parentRoute: typeof LayoutImport
+    }
     "/_layout/test/": {
       id: "/_layout/test/"
       path: "/test"
@@ -210,6 +231,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthAuthLayoutIndexImport
       parentRoute: typeof AuthAuthLayoutImport
     }
+    "/_layout/test/$testId/tag-test": {
+      id: "/_layout/test/$testId/tag-test"
+      path: "/test/$testId/tag-test"
+      fullPath: "/test/$testId/tag-test"
+      preLoaderRoute: typeof LayoutTestTestIdTagTestImport
+      parentRoute: typeof LayoutImport
+    }
     "/_layout/test/$testId/": {
       id: "/_layout/test/$testId/"
       path: "/test/$testId"
@@ -228,8 +256,10 @@ interface LayoutRouteChildren {
   LayoutUsersUserIdRoute: typeof LayoutUsersUserIdRoute
   LayoutExamIndexRoute: typeof LayoutExamIndexRoute
   LayoutStatisticIndexRoute: typeof LayoutStatisticIndexRoute
+  LayoutTagIndexRoute: typeof LayoutTagIndexRoute
   LayoutTestIndexRoute: typeof LayoutTestIndexRoute
   LayoutUsersIndexRoute: typeof LayoutUsersIndexRoute
+  LayoutTestTestIdTagTestRoute: typeof LayoutTestTestIdTagTestRoute
   LayoutTestTestIdIndexRoute: typeof LayoutTestTestIdIndexRoute
 }
 
@@ -239,8 +269,10 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutUsersUserIdRoute: LayoutUsersUserIdRoute,
   LayoutExamIndexRoute: LayoutExamIndexRoute,
   LayoutStatisticIndexRoute: LayoutStatisticIndexRoute,
+  LayoutTagIndexRoute: LayoutTagIndexRoute,
   LayoutTestIndexRoute: LayoutTestIndexRoute,
   LayoutUsersIndexRoute: LayoutUsersIndexRoute,
+  LayoutTestTestIdTagTestRoute: LayoutTestTestIdTagTestRoute,
   LayoutTestTestIdIndexRoute: LayoutTestTestIdIndexRoute,
 }
 
@@ -283,9 +315,11 @@ export interface FileRoutesByFullPath {
   "/auth/register": typeof AuthAuthLayoutRegisterRoute
   "/exam": typeof LayoutExamIndexRoute
   "/statistic": typeof LayoutStatisticIndexRoute
+  "/tag": typeof LayoutTagIndexRoute
   "/test": typeof LayoutTestIndexRoute
   "/users": typeof LayoutUsersIndexRoute
   "/auth/": typeof AuthAuthLayoutIndexRoute
+  "/test/$testId/tag-test": typeof LayoutTestTestIdTagTestRoute
   "/test/$testId": typeof LayoutTestTestIdIndexRoute
 }
 
@@ -298,8 +332,10 @@ export interface FileRoutesByTo {
   "/auth/register": typeof AuthAuthLayoutRegisterRoute
   "/exam": typeof LayoutExamIndexRoute
   "/statistic": typeof LayoutStatisticIndexRoute
+  "/tag": typeof LayoutTagIndexRoute
   "/test": typeof LayoutTestIndexRoute
   "/users": typeof LayoutUsersIndexRoute
+  "/test/$testId/tag-test": typeof LayoutTestTestIdTagTestRoute
   "/test/$testId": typeof LayoutTestTestIdIndexRoute
 }
 
@@ -315,9 +351,11 @@ export interface FileRoutesById {
   "/auth/_auth-layout/register": typeof AuthAuthLayoutRegisterRoute
   "/_layout/exam/": typeof LayoutExamIndexRoute
   "/_layout/statistic/": typeof LayoutStatisticIndexRoute
+  "/_layout/tag/": typeof LayoutTagIndexRoute
   "/_layout/test/": typeof LayoutTestIndexRoute
   "/_layout/users/": typeof LayoutUsersIndexRoute
   "/auth/_auth-layout/": typeof AuthAuthLayoutIndexRoute
+  "/_layout/test/$testId/tag-test": typeof LayoutTestTestIdTagTestRoute
   "/_layout/test/$testId/": typeof LayoutTestTestIdIndexRoute
 }
 
@@ -333,9 +371,11 @@ export interface FileRouteTypes {
     | "/auth/register"
     | "/exam"
     | "/statistic"
+    | "/tag"
     | "/test"
     | "/users"
     | "/auth/"
+    | "/test/$testId/tag-test"
     | "/test/$testId"
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -347,8 +387,10 @@ export interface FileRouteTypes {
     | "/auth/register"
     | "/exam"
     | "/statistic"
+    | "/tag"
     | "/test"
     | "/users"
+    | "/test/$testId/tag-test"
     | "/test/$testId"
   id:
     | "__root__"
@@ -362,9 +404,11 @@ export interface FileRouteTypes {
     | "/auth/_auth-layout/register"
     | "/_layout/exam/"
     | "/_layout/statistic/"
+    | "/_layout/tag/"
     | "/_layout/test/"
     | "/_layout/users/"
     | "/auth/_auth-layout/"
+    | "/_layout/test/$testId/tag-test"
     | "/_layout/test/$testId/"
   fileRoutesById: FileRoutesById
 }
@@ -401,8 +445,10 @@ export const routeTree = rootRoute
         "/_layout/users/$userId",
         "/_layout/exam/",
         "/_layout/statistic/",
+        "/_layout/tag/",
         "/_layout/test/",
         "/_layout/users/",
+        "/_layout/test/$testId/tag-test",
         "/_layout/test/$testId/"
       ]
     },
@@ -449,6 +495,10 @@ export const routeTree = rootRoute
       "filePath": "_layout/statistic/index.tsx",
       "parent": "/_layout"
     },
+    "/_layout/tag/": {
+      "filePath": "_layout/tag/index.tsx",
+      "parent": "/_layout"
+    },
     "/_layout/test/": {
       "filePath": "_layout/test/index.tsx",
       "parent": "/_layout"
@@ -460,6 +510,10 @@ export const routeTree = rootRoute
     "/auth/_auth-layout/": {
       "filePath": "auth/_auth-layout/index.tsx",
       "parent": "/auth/_auth-layout"
+    },
+    "/_layout/test/$testId/tag-test": {
+      "filePath": "_layout/test/$testId/tag-test.tsx",
+      "parent": "/_layout"
     },
     "/_layout/test/$testId/": {
       "filePath": "_layout/test/$testId/index.tsx",

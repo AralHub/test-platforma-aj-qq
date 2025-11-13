@@ -9,18 +9,33 @@ export type Exam = {
 	is_expired?: boolean
 }
 
-export type Stats = {
+export type SubmitAnswerPost = {
+	user_attempt_id: number
 	question_id: number
-	total_responses: number
-	count: number
-	percent: number
+	selected_option_id: number
+}
+
+export type Stats = {
+	user_id: number
+	user_name: string
+	total_attempts: number
+	avg_score_percentage: number
+	total_correct_answers: number
+	total_wrong_answers: number
+	total_questions_faced: number
+	unanswered_questions: number
+	avg_correct_percentage: number
 }
 
 export type Start = {
+	total_score: number
 	user_id: number
 	exam_id: number
 	started_at: string
+	fixed_started_time: string
 	ended_at: string
+	passed: boolean
+	uuid: string
 	id: number
 }
 

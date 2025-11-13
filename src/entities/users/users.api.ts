@@ -1,6 +1,6 @@
 import { useCrudQuery } from "src/shared/api"
-import { userService } from "../model/users.service"
 import type { GetParams, ParamId } from "src/shared/types"
+import { userService } from "./users.service"
 
 export const useGetUsersList = () =>
 	useCrudQuery({ queryFn: userService.get, queryKey: ["users"] })
@@ -11,7 +11,7 @@ export const useGetUsersById = (id: ParamId) =>
 		queryKey: ["users", "user", id],
 		enabled: !!id
 	})
-	
+
 export const useGetUsersByIdAnswers = (id: ParamId, params: GetParams) =>
 	useCrudQuery({
 		queryFn: () => userService.getByIdAnswers(id, params),

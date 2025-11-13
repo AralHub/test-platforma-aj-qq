@@ -1,11 +1,28 @@
 import { ArrowLeftOutlined, CameraOutlined } from "@ant-design/icons"
 import { useNavigate, useParams } from "@tanstack/react-router"
-import { Button, Card, Flex, Image, Tag, Typography, Upload } from "antd"
 import {
+	Button,
+	Card,
+	Flex,
+	Image,
+	message,
+	Select,
+	Tag,
+	Typography,
+	Upload
+} from "antd"
+import { useEffect } from "react"
+import { useGetExamList } from "src/entities/exam"
+import {
+	QuestionAddExam,
+	QuestionAddTag,
 	useAddImage,
+	useAddQuestionToExam,
+	useAddQuestionToTag,
 	useDeleteQuestion,
 	useGetAdminQuestions
 } from "src/entities/questions"
+import { useGetTags } from "src/entities/tag"
 import { QuestionsForm } from "src/features/questions"
 import { useToken } from "src/shared/hooks"
 import { AddButton, DeleteButton, EditButton } from "src/shared/ui"
@@ -21,7 +38,24 @@ export const QuestionsPage = () => {
 	const { mutate: deleteQuestion } = useDeleteQuestion()
 	const { mutate: addImage } = useAddImage()
 	const navigate = useNavigate()
+	const { data: exams, isLoading } = useGetExamList()
+	const { mutate, isSuccess } = useAddQuestionToExam()
+	const { mutate: addToTag, isSuccess: TagSuccess } = useAddQuestionToTag()
+	const { data: tags, isLoading: tagsLoading } = useGetTags()
 
+	const handleChange = ({ exam_id, question_id }: QuestionAddExam) => {
+		mutate({ exam_id, question_id })
+	}
+
+	const handleChangeTag = ({ tag_id, question_id }: QuestionAddTag) => {
+		addToTag({ tag_id, question_id })
+	}
+
+	useEffect(() => {
+		if (isSuccess || TagSuccess) {
+			message.success("Вопрос добавлен!")
+		}
+	}, [isSuccess, TagSuccess])
 	return (
 		<>
 			<Flex vertical={true}>
@@ -46,6 +80,30 @@ export const QuestionsPage = () => {
 									{item.text}
 								</Flex>
 								<Flex gap={10}>
+									<Select
+										placeholder="Добавить к тегу?"
+										loading={tagsLoading}
+										style={{ width: 220 }}
+										onChange={(e: number) =>
+											handleChangeTag({ tag_id: e, question_id: item.id })
+										}
+										options={tags?.data.map((item) => ({
+											value: item.id,
+											label: item.name
+										}))}
+									/>
+									<Select
+										placeholder="Добавить к предмету?"
+										loading={isLoading}
+										style={{ width: 220 }}
+										onChange={(e: number) =>
+											handleChange({ exam_id: e, question_id: item.id })
+										}
+										options={exams?.data.map((item) => ({
+											value: item.id,
+											label: item.title
+										}))}
+									/>
 									<EditButton params={item} />
 									<Upload
 										showUploadList={false}
@@ -61,7 +119,7 @@ export const QuestionsPage = () => {
 									</Upload>
 									<DeleteButton
 										data={item.text}
-										onClick={() => deleteQuestion(String(item.id))}
+										onConfirm={() => deleteQuestion(String(item.id))}
 									/>
 								</Flex>
 							</Flex>
@@ -81,7 +139,7 @@ export const QuestionsPage = () => {
 							{item.options.map((question) => (
 								<Tag
 									style={{ padding: "10px", borderRadius: 5 }}
-									key={question.text}
+									key={question.id}
 								>
 									{question.text}
 								</Tag>
